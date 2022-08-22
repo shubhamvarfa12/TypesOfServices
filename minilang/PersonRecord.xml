@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://ofbiz.apache.org/Simple-Method" xsi:schemaLocation="http://ofbiz.apache.org/Simple-Method http://ofbiz.apache.org/dtds/simple-methods.xsd">
+<simple-method method-name="createPersonRecord" short-description="Create a Person Record">
+
+    <log level="info" message="============================Created new shipment ${parameters.partyId}"/>
+    <entity-one entity-name="PersonEntity" value-field="newEntity1">
+        <field-map field-name="partyId" from-field="parameters.partyId"/>
+    </entity-one>
+    <log level="info" message="============================Created new shipment ${newEntity1}"/>
+
+        <make-value entity-name="PersonEntity" value-field="newEntity"/>
+    <if-empty field="newEntity1">
+        <set-nonpk-fields map="parameters" value-field="newEntity"/>
+        <set-pk-fields map="parameters" value-field="newEntity"/>
+        <make-next-seq-id value-field="newEntity" seq-field-name="partyId" numeric-padding="2"/>
+        <field-to-result field="newEntity.partyId" result-name="partyId"/>
+        <create-value value-field="newEntity"/>
+    </if-empty>
+
+    <if-not-empty field="newEntity1">
+        <set field="newEntity.partyId" from-field="partyId"/>
+        <set-pk-fields map="parameters" value-field="newEntity"/>
+        <set-nonpk-fields map="parameters" value-field="newEntity"/>
+        <field-to-result field="newEntity.partyId" result-name="partyId"/>
+        <store-value value-field="newEntity"/>
+    </if-not-empty>
+</simple-method>
+</simple-methods>
+
+
