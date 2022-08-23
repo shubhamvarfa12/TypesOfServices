@@ -47,7 +47,7 @@
         <attribute name="comments" type="String" mode="IN" optional="true"/>
     </service>
 
-    <service name="createPersonEntity" default-entity-name="PersonEntity" engine="entity-auto" invoke="create" auth="true">
+    <service name="createPersonEntityByEntityAuto" default-entity-name="PersonEntity" engine="entity-auto" invoke="create" auth="true">
         <description>Create an Person record using entityAuto</description>
         <attribute name="partyId" type="String" mode="INOUT" optional="true"/>
         <attribute name="roleTypeId" type="String" mode="IN" optional="false"/>

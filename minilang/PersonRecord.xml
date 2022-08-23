@@ -5,13 +5,13 @@
 <simple-method method-name="createPersonRecord" short-description="Create a Person Record">
 
     <log level="info" message="============================Created new shipment ${parameters.partyId}"/>
-    <entity-one entity-name="PersonEntity" value-field="newEntity1">
+    <entity-one entity-name="PersonEntity" value-field="party">
         <field-map field-name="partyId" from-field="parameters.partyId"/>
     </entity-one>
-    <log level="info" message="============================Created new shipment ${newEntity1}"/>
+    <log level="info" message="============================Record of newEntity1 ${newEntity1}"/>
 
+    <if-empty field="party">
         <make-value entity-name="PersonEntity" value-field="newEntity"/>
-    <if-empty field="newEntity1">
         <set-nonpk-fields map="parameters" value-field="newEntity"/>
         <set-pk-fields map="parameters" value-field="newEntity"/>
         <make-next-seq-id value-field="newEntity" seq-field-name="partyId" numeric-padding="2"/>
@@ -19,12 +19,10 @@
         <create-value value-field="newEntity"/>
     </if-empty>
 
-    <if-not-empty field="newEntity1">
-        <set field="newEntity.partyId" from-field="partyId"/>
-        <set-pk-fields map="parameters" value-field="newEntity"/>
-        <set-nonpk-fields map="parameters" value-field="newEntity"/>
-        <field-to-result field="newEntity.partyId" result-name="partyId"/>
-        <store-value value-field="newEntity"/>
+    <if-not-empty field="party">
+        <set-nonpk-fields map="parameters" value-field="party"/>
+        <field-to-result field="party.partyId" result-name="partyId"/>
+        <store-value value-field="party"/>
     </if-not-empty>
 </simple-method>
 </simple-methods>

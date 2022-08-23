@@ -4,21 +4,28 @@ def PersonRecordService() {
     result = [:];
         String partyId = (String) context.get("partyId");
         try {
-            personEntity = delegator.makeValue("PersonEntity");
-            party = from("Party").where("partyId",partyId).queryOne();
-
+            party = from("PersonEntity").where("partyId",partyId).queryOne();
             if(party==null) {
+                personEntity = delegator.makeValue("PersonEntity");
                 personEntity.setNextSeqId();
                 personEntity.setPKFields(context);
-                Debug.log("=========================================" + personEntity.getString("firstName"));
+                personEntity.setNonPKFields(context);
+                personEntity = delegator.create(personEntity);
+                result.partyId = personEntity.partyId;
+                partyId= personEntity.partyId;
             }else {
-                personEntity.put("partyId",partyId);
+                party.contactMechId = (context.contactMechId);
+                party.roleTypeId = (context.roleTypeId);
+                party.firstName = (context.firstName);
+                party.lastName = (context.lastName);
+                party.emailAddress = (context.emailAddress);
+                party.contactNumber = (context.contactNumber);
+                party.address = (context.address);
+                party.comments = (context.comments);
+                party = delegator.store(party);
+                result.partyId = partyId;
             }
-            personEntity.setNonPKFields(context);
-            personEntity = delegator.createOrStore(personEntity);
-
-        result.partyId = personEntity.partyId;
-        logInfo("==========This is my first Groovy Service implementation in Apache OFBiz. OfbizDemo record " +"created successfully with ofbizDemoId: "+personEntity.getString("partyId"));
+            logInfo("========= This partyId use in update the record " +"created successfully with partyId: "+partyId);
     } catch (GenericEntityException e) {
         logError(e.getMessage());
         return error("Error in creating record in OfbizDemo entity ........");
