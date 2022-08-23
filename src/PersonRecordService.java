@@ -23,14 +23,14 @@ public class PersonRecordService {
                 personEntity.setPKFields(context);
                 personEntity.setNonPKFields(context);
                 personEntity = delegator.create(personEntity);
-                result.put("partyId", personEntity.getString("partyId"));
             }
             else
             {
                 party.setNonPKFields(context);
                 delegator.store(party);
-                result.put("partyId", party.getString("partyId"));
             }
+            result.put("partyId", partyId);
+
         } catch (GenericEntityException e) {
             Debug.logError(e, module);
             return ServiceUtil.returnError("Error in creating record in OfbizDemo entity ........" +module);

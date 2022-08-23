@@ -11,7 +11,6 @@ def PersonRecordService() {
                 personEntity.setPKFields(context);
                 personEntity.setNonPKFields(context);
                 personEntity = delegator.create(personEntity);
-                result.partyId = personEntity.partyId;
                 partyId= personEntity.partyId;
             }else {
                 party.contactMechId = (context.contactMechId);
@@ -23,8 +22,9 @@ def PersonRecordService() {
                 party.address = (context.address);
                 party.comments = (context.comments);
                 party = delegator.store(party);
-                result.partyId = partyId;
             }
+               result.partyId = partyId;
+               
             logInfo("========= This partyId use in update the record " +"created successfully with partyId: "+partyId);
     } catch (GenericEntityException e) {
         logError(e.getMessage());
